@@ -1,0 +1,7 @@
+---
+logrotate_compress: False
+logrotate_create: True
+logrotate_dateext: True
+logrotate_include: /etc/logrotate.d
+logrotate_interval: weekly
+logrotate_weeks: 4

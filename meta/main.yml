@@ -1,0 +1,15 @@
+---
+dependencies: []
+galaxy_info:
+  author: tkimball83
+  description: RHEL/CentOS - Rotates, compresses, and mails system logs
+  license: BSD
+  min_ansible_version: 2.0
+  platforms:
+    - name: EL
+      versions: 
+        - 6
+        - 7
+  galaxy_tags:
+    - syslog
+    - system

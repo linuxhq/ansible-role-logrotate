@@ -1,0 +1,16 @@
+---
+- name: Install logrotate package
+  tags: logrotate
+  yum: name=logrotate
+       state=latest
+       update_cache=yes
+  register: logrotate_yum
+
+- name: Configure logrotate.conf
+  tags: logrotate
+  template: src=logrotate.conf.j2
+            dest=/etc/logrotate.conf
+            owner=root
+            group=root
+            mode=0644
+  when: logrotate_yum|success
