@@ -1,63 +1,38 @@
 # see "man logrotate" for details
-# rotate log files {{ logrotate_interval }}
-{% if logrotate_interval is defined %}
-{{ logrotate_interval }}
-{% else %}
-weekly
-{% endif %}
+# rotate log files {{ logrotate_interval if logrotate_interval is defined else 'weekly' }}
+{{ logrotate_interval if logrotate_interval is defined else 'weekly' }}
 
-# keep {{ logrotate_weeks }} weeks worth of backlogs
-{% if logrotate_weeks is defined %}
-rotate {{ logrotate_weeks }}
-{% else %}
-rotate 4
-{% endif %}
+# keep {{ logrotate_weeks if logrotate_weeks is defined else '4' }} weeks worth of backlogs
+rotate {{ logrotate_weeks if logrotate_weeks is defined else '4' }}
 
 # create new (empty) log files after rotating old ones
-{% if logrotate_create is defined %}
-{%   if logrotate_create %}
-create
-{%   else %}
-#create
-{%   endif %}
-{% else %}
-create
-{% endif %}
+{{ '#' if logrotate_create is defined and not logrotate_create else '' }}create
 
 # use date as a suffix of the rotated file
-{% if logrotate_dateext is defined %}
-{%   if logrotate_dateext %}
-dateext
-{%   else %}
-#dateext
-{%   endif %}
-{% else %}
-dateext
-{% endif %}
+{{ '#' if logrotate_dateext is defined and not logrotate_dateext else '' }}dateext
 
 # uncomment this if you want your log files compressed
-{% if logrotate_compress is defined %}
-{%   if logrotate_compress %}
-compress
-{%   else %}
-#compress
-{%   endif %}
-{% else %}
-#compress
-{% endif %}
+{{ '#' if logrotate_compress is defined and not logrotate_compress else '' }}compress
 
 # RPM packages drop log rotation information into this directory
-{% if logrotate_include is defined %}
-include {{ logrotate_include }}
-{% else %}
-include /etc/logrotate.d
-{% endif %}
+include {{ logrotate_include if logrotate_include is defined else '/etc/logrotate.d' }}
 
+{% if logrotate_options is defined %}
+# Additional ansible defined options
+{%   for key, value in logrotate_options.iteritems()|sort %}
+{%     if value is string %}
+{{ key }} {{ value }}
+{%     else %}
+{{ key }}
+{%     endif %}
+{%   endfor %}
+
+{% endif %}
 # no packages own wtmp and btmp -- we'll rotate them here
 /var/log/wtmp {
     monthly
     create 0664 root utmp
-	minsize 1M
+    minsize 1M
     rotate 1
 }
 

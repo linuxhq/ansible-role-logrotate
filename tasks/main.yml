@@ -1,16 +1,43 @@
 ---
-- name: Install logrotate package
+- name: Ensure that the logrotate package is installed
   tags: logrotate
-  yum: name=logrotate
-       state=latest
-       update_cache=yes
+  yum:
+    name: logrotate
+    state: present
+    update_cache: yes
   register: logrotate_yum
 
-- name: Configure logrotate.conf
+- block:
+    - name: Applying logrotate.conf configuration
+      template:
+        src: logrotate.conf.j2
+        dest: /etc/logrotate.conf
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Applying logrotate.d configurations
+      template:
+        src: logrotate_d.j2
+        dest: "/etc/logrotate.d/{{ item.name }}"
+        owner: root
+        group: root
+        mode: 0644
+      with_items: "{{ logrotate_d }}"
+      when:
+        - item.name is defined
+        - item.files is defined
+        - item.options is defined
+        - logrotate_d is defined
+
+    - name: Applying logrotate rwtab configuration
+      template:
+        src: logrotate_rwtab.j2
+        dest: /etc/rwtab.d/logrotate
+        owner: root
+        group: root
+        mode: 0644
+      when: logrotate_rwtab is defined
   tags: logrotate
-  template: src=logrotate.conf.j2
-            dest=/etc/logrotate.conf
-            owner=root
-            group=root
-            mode=0644
   when: logrotate_yum|success
+...

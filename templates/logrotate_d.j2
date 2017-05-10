@@ -1,0 +1,18 @@
+{% for file in item.files %}
+{{ file }}
+{% endfor %}
+{
+{% for key, value in item.options.iteritems()|sort %}
+{%   if value is iterable and value is not string %}
+    {{ key }}
+{%       for x in item.options[key] %}
+        {{ x }}
+{%       endfor %}
+    endscript
+{%   elif value is string %}
+    {{ key }} {{ value }}
+{%   else %}
+    {{ key }}
+{%   endif %}
+{% endfor %}
+}

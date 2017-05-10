@@ -1,0 +1,5 @@
+{% for key in logrotate_rwtab %}
+{%   for value in logrotate_rwtab[key]|sort %}
+{{ key }} {{ value }}
+{%   endfor %}
+{% endfor %}
