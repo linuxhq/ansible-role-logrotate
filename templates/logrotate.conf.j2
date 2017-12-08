@@ -1,9 +1,9 @@
 # see "man logrotate" for details
-# rotate log files {{ logrotate_interval if logrotate_interval is defined else 'weekly' }}
-{{ logrotate_interval if logrotate_interval is defined else 'weekly' }}
+# rotate log files {{ logrotate_interval }}
+{{ logrotate_interval }}
 
-# keep {{ logrotate_weeks if logrotate_weeks is defined else '4' }} weeks worth of backlogs
-rotate {{ logrotate_weeks if logrotate_weeks is defined else '4' }}
+# keep {{ logrotate_weeks }} weeks worth of backlogs
+rotate {{ logrotate_weeks }}
 
 # create new (empty) log files after rotating old ones
 {{ '#' if logrotate_create is defined and not logrotate_create else '' }}create
@@ -15,24 +15,24 @@ rotate {{ logrotate_weeks if logrotate_weeks is defined else '4' }}
 {{ '#' if logrotate_compress is defined and not logrotate_compress else '' }}compress
 
 # RPM packages drop log rotation information into this directory
-include {{ logrotate_include if logrotate_include is defined else '/etc/logrotate.d' }}
+include {{ logrotate_include }}
 
 {% if logrotate_options is defined %}
 # Additional ansible defined options
 {%   for key, value in logrotate_options.iteritems()|sort %}
-{%     if value is string %}
-{{ key }} {{ value }}
-{%     else %}
+{%     if value is sameas true %}
 {{ key }}
+{%     elif value is string or value is number %}
+{{ key }} {{ value }}
 {%     endif %}
 {%   endfor %}
-
 {% endif %}
+
 # no packages own wtmp and btmp -- we'll rotate them here
 /var/log/wtmp {
     monthly
     create 0664 root utmp
-    minsize 1M
+        minsize 1M
     rotate 1
 }
 

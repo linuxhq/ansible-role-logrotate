@@ -1,6 +1,12 @@
 ---
+logrotate_compress: False
+logrotate_create: True
 logrotate_d: []
+logrotate_dateext: True
+logrotate_include: /etc/logrotate.d
+logrotate_interval: weekly
 logrotate_rwtab:
   dirs:
     - /var/lib/logrotate
+logrotate_weeks: 4
 ...

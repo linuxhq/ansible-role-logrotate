@@ -12,22 +12,22 @@ None
 
 Available variables are listed below, along with default values.
 
-    logrotate_d: []
-    logrotate_rwtab:
-      dirs:
-        - /var/lib/logrotate
-
-Additional variables not defined by default
-
     logrotate_compress: False
     logrotate_create: True
+    logrotate_d: []
     logrotate_dateext: True
     logrotate_include: /etc/logrotate.d
     logrotate_interval: weekly
+    logrotate_rwtab:
+      dirs:
+        - /var/lib/logrotate
+    logrotate_weeks: 4
+
+Additional variables not defined by default
+
     logrotate_options:
       mail: github@linuxhq.org
       shred: True
-    logrotate_weeks: 4
 
 ## Dependencies
 
@@ -49,11 +49,11 @@ None
               options:
                 compress: True
                 dateext: True
-                rotate: '1'
+                rotate: 1
 
 ## License
 
-BSD
+GPLv3
 
 ## Author Information
 

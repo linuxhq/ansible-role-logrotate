@@ -3,16 +3,16 @@
 {% endfor %}
 {
 {% for key, value in item.options.iteritems()|sort %}
-{%   if value is iterable and value is not string %}
+{%   if value is sameas true %}
     {{ key }}
-{%       for x in item.options[key] %}
-        {{ x }}
-{%       endfor %}
-    endscript
-{%   elif value is string %}
+{%   elif value is string or value is number %}
     {{ key }} {{ value }}
 {%   else %}
     {{ key }}
+{%     for x in item.options[key] %}
+        {{ x }}
+{%     endfor %}
+    endscript
 {%   endif %}
 {% endfor %}
 }
