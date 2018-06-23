@@ -23,13 +23,15 @@ Available variables are listed below, along with default values.
       weekly: true
     logrotate_d: []
     logrotate_files:
-      - files: /var/log/btmp
+      - files:
+          - /var/log/btmp
         options:
           create: '0600 root utmp'
           missingok: true
           monthly: true
           rotate: 1
-      - files: /var/log/wtmp
+      - files:
+          - /var/log/wtmp
         options:
           create: '0664 root utmp'
           minsize: 1M
