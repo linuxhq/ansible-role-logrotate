@@ -1,18 +1,21 @@
-{% for file in item.files %}
-{{ file }}
-{% endfor %}
-{
+# {{ ansible_managed }}
+
+{{ item.files|join(' ') }} {
 {% for key, value in item.options.iteritems()|sort %}
 {%   if value is sameas true %}
     {{ key }}
-{%   elif value is string or value is number %}
-    {{ key }} {{ value }}
-{%   else %}
+{%   elif value is string %}
+    {{ key }} {{ value|string }}
+{%   elif value is number %}
+    {{ key }} {{ value|int }}
+{%   elif value is iterable %}
     {{ key }}
-{%     for x in item.options[key] %}
-        {{ x }}
+{%     for i in item.options[key] %}
+        {{ i }}
 {%     endfor %}
     endscript
+{%   else %}
+    {{ key }} {{ value }}
 {%   endif %}
 {% endfor %}
 }

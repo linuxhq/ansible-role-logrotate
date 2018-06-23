@@ -1,12 +1,28 @@
 ---
-logrotate_compress: False
-logrotate_create: True
+logrotate:
+  compress: false
+  create: true
+  dateext: true
+  include: /etc/logrotate.d
+  rotate: 4
+  weekly: true
 logrotate_d: []
-logrotate_dateext: True
-logrotate_include: /etc/logrotate.d
-logrotate_interval: weekly
+logrotate_files:
+  - files:
+      - /var/log/btmp
+    options:
+      create: '0600 root utmp'
+      missingok: true
+      monthly: true
+      rotate: 1
+  - files:
+      - /var/log/wtmp
+    options:
+      create: '0664 root utmp'
+      minsize: 1M
+      monthly: true
+      rotate: 1
 logrotate_rwtab:
   dirs:
     - /var/lib/logrotate
-logrotate_weeks: 4
 ...

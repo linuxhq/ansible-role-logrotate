@@ -7,36 +7,46 @@
     state: present
   register: logrotate_yum
 
-- block:
-    - name: Applying logrotate.conf configuration
-      template:
-        src: logrotate.conf.j2
-        dest: /etc/logrotate.conf
-        owner: root
-        group: root
-        mode: 0644
-
-    - name: Applying logrotate.d configurations
-      template:
-        src: logrotate_d.j2
-        dest: "/etc/logrotate.d/{{ item.name }}"
-        owner: root
-        group: root
-        mode: 0644
-      with_items: "{{ logrotate_d }}"
-      when:
-        - item.name is defined
-        - item.files is defined
-        - item.options is defined
-
-    - name: Applying logrotate rwtab configuration
-      template:
-        src: logrotate_rwtab.j2
-        dest: /etc/rwtab.d/logrotate
-        owner: root
-        group: root
-        mode: 0644
+- name: Attempting to overlay logrotate.conf configurations
   tags: logrotate
   become: true
-  when: logrotate_yum|success
+  template:
+    src: logrotate.conf.j2
+    dest: /etc/logrotate.conf
+    owner: root
+    group: root
+    mode: 0644
+  when:
+    - logrotate|length > 0
+    - logrotate_yum is success
+
+- name: Attempting to overlay logrotate.d configurations
+  tags: logrotate
+  become: true
+  template:
+    src: logrotate_d.j2
+    dest: "/etc/logrotate.d/{{ item.name }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ logrotate_d }}"
+  when:
+    - item.name is defined
+    - item.files is defined
+    - item.options is defined
+    - logrotate_d|length > 0
+    - logrotate_yum is success
+
+- name: Attempting to overlay logrotate rwtab configurations
+  tags: logrotate
+  become: true
+  template:
+    src: logrotate_rwtab.j2
+    dest: /etc/rwtab.d/logrotate
+    owner: root
+    group: root
+    mode: 0644
+  when:
+    - logrotate_rwtab|length > 0
+    - logrotate_yum is success
 ...
