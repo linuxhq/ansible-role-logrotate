@@ -1,6 +1,7 @@
 ---
 dependencies: []
 galaxy_info:
+  role_name: logrotate
   author: tkimball83
   description: RHEL/CentOS - Rotates, compresses, and mails system logs
   license: GPLv3
