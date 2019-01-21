@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 
 {{ item.files|join(' ') }} {
-{% for key, value in item.options.iteritems()|sort %}
+{% for key, value in item.options.items()|sort %}
 {%   if value is sameas true %}
     {{ key }}
 {%   elif value is string %}

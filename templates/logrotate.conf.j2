@@ -1,6 +1,6 @@
 # {{ ansible_managed }}
 
-{% for key, value in logrotate.iteritems()|sort %}
+{% for key, value in logrotate.items()|sort %}
 {%   if value is sameas true %}
 {{ key }}
 {%   elif value is string %}
@@ -15,7 +15,7 @@
 
 {%   for f in logrotate_files|sort %}
 {{ f.files|join(' ') }} {
-{%     for key, value in f.options.iteritems()|sort %}
+{%     for key, value in f.options.items()|sort %}
 {%       if value is sameas true %}
     {{ key }}
 {%       elif value is string %}
