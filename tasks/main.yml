@@ -22,7 +22,7 @@
   become: true
   template:
     src: logrotate_d.j2
-    dest: "{{ logrotate.include }}/{{ item.name }}"
+    dest: "{{ logrotate.include + '/' + item.name }}"
     owner: root
     group: root
     mode: 0644
