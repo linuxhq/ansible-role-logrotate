@@ -17,7 +17,7 @@
 {% endif %}
 {% if logrotate_files|length > 0 %}
 
-{%   for f in logrotate_files|sort %}
+{%   for f in logrotate_files %}
 {{ f.files|join(' ') }} {
 {%     for key, value in f.options.items()|sort %}
 {%       if value is sameas true %}
