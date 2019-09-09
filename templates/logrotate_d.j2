@@ -4,6 +4,8 @@
 {% for key, value in item.options.items()|sort %}
 {%   if value is sameas true %}
     {{ key }}
+{%   elif value is sameas false %}
+#   {{ key }}
 {%   elif value is string %}
     {{ key }} {{ value|string }}
 {%   elif value is number %}

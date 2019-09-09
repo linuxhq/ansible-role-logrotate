@@ -6,6 +6,8 @@
 {%   for key, value in logrotate.items()|sort %}
 {%     if value is sameas true %}
 {{ key }}
+{%     elif value is sameas false %}
+# {{ key }}
 {%     elif value is string %}
 {{ key }} {{ value|string }}
 {%     elif value is number %}
@@ -22,6 +24,8 @@
 {%     for key, value in f.options.items()|sort %}
 {%       if value is sameas true %}
     {{ key }}
+{%       elif value is sameas false %}
+#   {{ key }}
 {%       elif value is string %}
     {{ key }} {{ value|string }}
 {%       elif value is number %}
